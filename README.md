@@ -5,13 +5,13 @@ This is the simple c language version of fleet battle game
 * Her oyuncunun bir txt dosyası oluşturup gemilerinin konumlarını yazması gerekmektedir. Aşağıda verilen örnekten yaralanılabilir.
         (+ işareti geminin bulunduğunu ifade ediyor.)
 
-       A     B     C     D     E     F
-1      +     -     -     -     -     -
-2      -     -     +     -     +     +
-3      -     -     +     -     -     -
-4      -     -     +     -     -     -
-5      -     -     -     -     -     +
-6      -     -     -     +     -     +
+               A     B     C     D     E     F
+        1      +     -     -     -     -     -
+        2      -     -     +     -     +     +
+        3      -     -     +     -     -     -
+        4      -     -     +     -     -     -
+        5      -     -     -     -     -     +
+        6      -     -     -     +     -     +
 
 * Oynanacak alan 6x6' lık olmalıdır.
 * 2 tane bir birimlik gemi (örnek: 1A ve 6D),
