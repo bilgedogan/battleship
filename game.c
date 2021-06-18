@@ -25,29 +25,45 @@ void print_table(char **table, char name[])
     
 }
 
-bool game(char name[],char **loc)
+bool game(char name[],char **loc,char **table)
 {
-    char estimation[3];
+    char *estimation = (char*)malloc(3*sizeof(char));
     bool bombed = false;
     printf("Make a guess, %s: ",name);
     scanf("%s",estimation);
-    printf("%s ",estimation);
+    //printf("%s ",estimation);
+
+    //for locations (index of table)
+    int x=0,y=0;
+    x = (int)(estimation[0])-49; //49 is ascii value of '1'
+    y = (int)estimation[1] - 65; //65 is ascii value of 'A'
+
+    while(table[x][y]!='-'){
+        printf("%s, you said this location before guess again: ",name);
+        scanf("%s",estimation);
+        x = (int)(estimation[0])- 49;
+        y = (int)estimation[1] - 65;
+    }
+
     for(int i = 0; i < 9; i++){
-        printf("%s\n",loc[i]);
-        if(estimation == loc[i]){
-            printf("BOOMMM!\n");
+        //printf("%s\n",loc[i]);
+        if(*estimation == *loc[i]){
             bombed = true;
+            printf("BOOMMM!\n");
+            table[x][y] = 'X';
             break;
         }
     }
     if(!bombed){
         printf("Opppsss! Wrong choice. Maybe next time...\n");
+        table[x][y] = '*';
     }
+    free(estimation);
     return bombed;
 }
 
 //there is a problem in this function
-void read_txt(char txt1[], char **loc1, char txt2[], char **loc2)
+void read_txt(char txt1[], char **loc1)
 {
     FILE *player1 = NULL;
     FILE *player2 = NULL;
@@ -57,26 +73,14 @@ void read_txt(char txt1[], char **loc1, char txt2[], char **loc2)
     for(int i = 0; i < 9;i++){
         char c[3];
         fscanf(player1,"%s ",c);
-        int total = (int)c[0] + (int)c[2];
         //printf("%s ",c);
-        loc1[i] = c;
+        loc1[i][0] = c[0];
+        loc1[i][1] = c[1];
+        loc1[i][2] = c[2];
         //printf("%s  ",loc1[i]);
     }
 
     fclose(player1);
-    
-
-    player2 = fopen(txt2,"r");
-
-    for(int i = 0; i < 9;i++){
-        char c[3];
-        fscanf(player2,"%s ",c);
-        //printf("%s ",c);
-        loc2[i] = c;
-        //printf("%s  ",loc2[i]);
-    }
-
-    fclose(player2);
     
 }
 
@@ -96,8 +100,8 @@ int main()
     char **loc1 = (char**)malloc(9*sizeof(char*));
     char **loc2 = (char**)malloc(9*sizeof(char*));
     for(int i = 0; i < 9; i++){
-        loc1[i] = (char*)malloc(2*sizeof(char));
-        loc2[i] = (char*)malloc(2*sizeof(char));
+        loc1[i] = (char*)malloc(3*sizeof(char));
+        loc2[i] = (char*)malloc(3*sizeof(char));
     }
 
     //players tables for printing step by step
@@ -127,12 +131,16 @@ int main()
     printf("%s, could you enter your txt file name (ex: filename.txt): ",name2);
     scanf("%s",txt2);
 
-    read_txt(txt1,loc1,txt2,loc2);
+    read_txt(txt1,loc1);
+    read_txt(txt2,loc2);
    
-    for(int i = 0; i < 9; i++){
+    //printf("%s", loc1[0]);
+    /*for(int i = 0; i < 9; i++){
         printf("%s ",loc1[i]);
         printf("%s \n",loc2[i]);
-    }
+    }*/
+
+
     printf("\n%s WILL START!\n", first == 1 ? name1 : name2);
 
     print_table(table1,name1);
@@ -141,25 +149,24 @@ int main()
     
 
     for(int i = 0; score1 != 9 && score2 != 9;i++){
-    
         if(i%2 == 0){
             if(first == 1){
-                if(game(name1,loc2))
+                if(game(name1,loc2,table2))
                     score1++;
             }
             else{
-                if(game(name2, loc1))
+                if(game(name2, loc1,table1))
                     score2++;
             }
         }
         else{
             if(first == 1){
-                if(game(name2,loc1))
+                if(game(name2,loc1,table1))
                     score2++;
             }
             
             else{
-                if(game(name1, loc2))
+                if(game(name1, loc2,table2))
                     score1++;
             }
         }
