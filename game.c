@@ -2,8 +2,11 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include <string.h>
 
 #define MAXNAME 15
+
+//check wether estimation is in 6*6 table
 
 void print_table(char **table, char name[])
 {
@@ -27,9 +30,9 @@ void print_table(char **table, char name[])
 
 bool game(char name[],char **loc,char **table)
 {
-    char *estimation = (char*)malloc(3*sizeof(char));
+    char estimation[3];
     bool bombed = false;
-    printf("Make a guess, %s: ",name);
+    printf("\nMake a guess, %s: ",name);
     scanf("%s",estimation);
     //printf("%s ",estimation);
 
@@ -47,7 +50,8 @@ bool game(char name[],char **loc,char **table)
 
     for(int i = 0; i < 9; i++){
         //printf("%s\n",loc[i]);
-        if(*estimation == *loc[i]){
+        if(strcmp(estimation, loc[i])==0){
+            //printf("%s %s\n",estimation, loc[i]);
             bombed = true;
             printf("BOOMMM!\n");
             table[x][y] = 'X';
@@ -58,7 +62,11 @@ bool game(char name[],char **loc,char **table)
         printf("Opppsss! Wrong choice. Maybe next time...\n");
         table[x][y] = '*';
     }
-    free(estimation);
+    for(int i = 0; i < 9; i++){
+        printf("%s ",loc[i]);
+        printf("\n");
+    }
+    
     return bombed;
 }
 
@@ -135,44 +143,48 @@ int main()
     read_txt(txt2,loc2);
    
     //printf("%s", loc1[0]);
-    /*for(int i = 0; i < 9; i++){
+    for(int i = 0; i < 9; i++){
         printf("%s ",loc1[i]);
         printf("%s \n",loc2[i]);
-    }*/
-
+    }
 
     printf("\n%s WILL START!\n", first == 1 ? name1 : name2);
 
     print_table(table1,name1);
     print_table(table2,name2);
 
-    
-
     for(int i = 0; score1 != 9 && score2 != 9;i++){
         if(i%2 == 0){
             if(first == 1){
-                if(game(name1,loc2,table2))
+                //printf("%d is starting\n\n", first);
+                if(game(name1,loc2,table2)){
                     score1++;
+                    //printf("score: %d\n",score1);
+                }
             }
             else{
-                if(game(name2, loc1,table1))
+                //printf("%d is starting\n\n", 2);
+                if(game(name2, loc1,table1)){
                     score2++;
+                }
             }
         }
         else{
             if(first == 1){
-                if(game(name2,loc1,table1))
+                //printf("2 will continue");
+                if(game(name2,loc1,table1)){
                     score2++;
+                }
             }
-            
             else{
-                if(game(name1, loc2,table2))
+                //printf("1 will continue");
+                if(game(name1, loc2,table2)){
                     score1++;
+                }
             }
         }
         print_table(table1,name1);
         print_table(table2,name2);
-        
     }
 
     free(table1);
