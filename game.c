@@ -6,10 +6,9 @@
 
 #define MAXNAME 15
 
-//check wether estimation is in 6*6 table
-
 void print_table(char **table, char name[])
 {
+    printf("\n");
     printf("Table of %s\n", name);
     printf(" ");
     for(int i = -1; i < 6; i++){
@@ -41,8 +40,17 @@ bool game(char name[],char **loc,char **table)
     x = (int)(estimation[0])-49; //49 is ascii value of '1'
     y = (int)estimation[1] - 65; //65 is ascii value of 'A'
 
-    while(table[x][y]!='-'){
-        printf("%s, you said this location before guess again: ",name);
+    while((x >= 6) || (y >= 6)|| table[x][y]!='-' ){
+        if(x >= 6 || y >= 6){
+            printf("%s is not in 6*6 table so guess again: ", estimation);
+        //printf("x:%d y:%d est:%s\n", x,y,estimation);
+        }
+        else{
+             printf("%s, you said this location before guess again: ",name);
+        
+        //printf("x:%d y:%d est:%s\n", x,y,estimation);
+        }
+
         scanf("%s",estimation);
         x = (int)(estimation[0])- 49;
         y = (int)estimation[1] - 65;
@@ -53,19 +61,19 @@ bool game(char name[],char **loc,char **table)
         if(strcmp(estimation, loc[i])==0){
             //printf("%s %s\n",estimation, loc[i]);
             bombed = true;
-            printf("BOOMMM!\n");
+            printf("\nBOOMMM!\n");
             table[x][y] = 'X';
             break;
         }
     }
     if(!bombed){
-        printf("Opppsss! Wrong choice. Maybe next time...\n");
+        printf("\nOpppsss! Wrong choice. Maybe next time...\n");
         table[x][y] = '*';
     }
-    for(int i = 0; i < 9; i++){
+    /*for(int i = 0; i < 9; i++){
         printf("%s ",loc[i]);
         printf("\n");
-    }
+    }*/
     
     return bombed;
 }
@@ -143,10 +151,10 @@ int main()
     read_txt(txt2,loc2);
    
     //printf("%s", loc1[0]);
-    for(int i = 0; i < 9; i++){
+    /*for(int i = 0; i < 9; i++){
         printf("%s ",loc1[i]);
         printf("%s \n",loc2[i]);
-    }
+    }*/
 
     printf("\n%s WILL START!\n", first == 1 ? name1 : name2);
 
@@ -185,7 +193,10 @@ int main()
         }
         print_table(table1,name1);
         print_table(table2,name2);
+        printf("\n\tSCORES\n%s: %d - %s: %d\n",name1,score1,name2,score2);
     }
+
+    printf("\n\n***************************************\n    CONGRATULATIONS WINNER IS %s\n***************************************", score1==9? name1 : name2);
 
     free(table1);
     free(table2);
