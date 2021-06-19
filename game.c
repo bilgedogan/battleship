@@ -6,6 +6,7 @@
 
 #define MAXNAME 15
 #define SIZE 6
+#define FLEET_NUMBER 9
 
 void print_table(char **table, char name[])
 {
@@ -43,7 +44,7 @@ bool game(char name[],char **loc,char **table)
 
     while((x >= SIZE) || (y >= SIZE)|| table[x][y]!='-' ){
         if(x >= SIZE || y >= SIZE){
-            printf("%s is not in 6*6 table so guess again: ", estimation);
+            printf("%s is not in %d*%d table so guess again: ", estimation,SIZE,SIZE);
         //printf("x:%d y:%d est:%s\n", x,y,estimation);
         }
         else{
@@ -57,7 +58,7 @@ bool game(char name[],char **loc,char **table)
         y = (int)estimation[1] - 65;
     }
 
-    for(int i = 0; i < 9; i++){
+    for(int i = 0; i < FLEET_NUMBER; i++){
         //printf("%s\n",loc[i]);
         if(strcmp(estimation, loc[i])==0){
             //printf("%s %s\n",estimation, loc[i]);
@@ -71,7 +72,7 @@ bool game(char name[],char **loc,char **table)
         printf("\nOpppsss! Wrong choice. Maybe next time...\n");
         table[x][y] = '*';
     }
-    /*for(int i = 0; i < 9; i++){
+    /*for(int i = 0; i < FLEET_NUMBER; i++){
         printf("%s ",loc[i]);
         printf("\n");
     }*/
@@ -80,24 +81,23 @@ bool game(char name[],char **loc,char **table)
 }
 
 //there is a problem in this function
-void read_txt(char txt1[], char **loc1)
+void read_txt(char txt[], char **loc)
 {
-    FILE *player1 = NULL;
-    FILE *player2 = NULL;
+    FILE *player = NULL;
 
-    player1 = fopen(txt1,"r");
+    player = fopen(txt,"r");
 
-    for(int i = 0; i < 9;i++){
+    for(int i = 0; i < FLEET_NUMBER;i++){
         char c[3];
-        fscanf(player1,"%s ",c);
+        fscanf(player,"%s ",c);
         //printf("%s ",c);
-        loc1[i][0] = c[0];
-        loc1[i][1] = c[1];
-        loc1[i][2] = c[2];
-        //printf("%s  ",loc1[i]);
+        loc[i][0] = c[0];
+        loc[i][1] = c[1];
+        loc[i][2] = c[2];
+        //printf("%s  ",loc[i]);
     }
 
-    fclose(player1);
+    fclose(player);
     
 }
 
@@ -114,9 +114,9 @@ int main()
     char name1[MAXNAME], name2[MAXNAME], txt1[MAXNAME], txt2[MAXNAME];
 
     //for locations
-    char **loc1 = (char**)malloc(9*sizeof(char*));
-    char **loc2 = (char**)malloc(9*sizeof(char*));
-    for(int i = 0; i < 9; i++){
+    char **loc1 = (char**)malloc(FLEET_NUMBER*sizeof(char*));
+    char **loc2 = (char**)malloc(FLEET_NUMBER*sizeof(char*));
+    for(int i = 0; i < FLEET_NUMBER; i++){
         loc1[i] = (char*)malloc(3*sizeof(char));
         loc2[i] = (char*)malloc(3*sizeof(char));
     }
@@ -124,7 +124,7 @@ int main()
     //players tables for printing step by step
     char **table1 = (char**)malloc(SIZE*sizeof(char*));
     char **table2 = (char**)malloc(SIZE*sizeof(char*));
-    for(int i = 0; i < 6; i++){
+    for(int i = 0; i < SIZE; i++){
         table1[i] = (char*)malloc(SIZE*sizeof(char));
         table2[i] = (char*)malloc(SIZE*sizeof(char));
     }
@@ -152,7 +152,7 @@ int main()
     read_txt(txt2,loc2);
    
     //printf("%s", loc1[0]);
-    /*for(int i = 0; i < 9; i++){
+    /*for(int i = 0; i < FLEET_NUMBER; i++){
         printf("%s ",loc1[i]);
         printf("%s \n",loc2[i]);
     }*/
@@ -162,7 +162,7 @@ int main()
     print_table(table1,name1);
     print_table(table2,name2);
 
-    for(int i = 0; score1 != 9 && score2 != 9;i++){
+    for(int i = 0; score1 != FLEET_NUMBER && score2 != FLEET_NUMBER;i++){
         if(i%2 == 0){
             if(first == 1){
                 //printf("%d is starting\n\n", first);
@@ -194,10 +194,10 @@ int main()
         }
         print_table(table1,name1);
         print_table(table2,name2);
-        printf("\n\tSCORES\n%s: %d - %s: %d\n",name1,score1,name2,score2);
+        printf("\n   SCORES\n%s: %d - %s: %d\n",name1,score1,name2,score2);
     }
 
-    printf("\n\n***************************************\n    CONGRATULATIONS WINNER IS %s\n***************************************", score1==9? name1 : name2);
+    printf("\n\n***************************************\n    CONGRATULATIONS WINNER IS %s\n***************************************", score1==FLEET_NUMBER? name1 : name2);
 
     free(table1);
     free(table2);
