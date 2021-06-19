@@ -14,9 +14,16 @@ This is the simple c language version of fleet battle game
         6      -     -     -     +     -     +
 
 * Oynanacak alan 6x6' lık olmalıdır.
+
+        UPDATE: Oyuncular tablonun boyularını değiştirebilir.
+        #define SIZE 6 //tablonun boyutları içindir
+        
 * 2 tane bir birimlik gemi (örnek: 1A ve 6D),
   2 tane iki birimlik gemi (örnek: 2E 2F ve 5F 6F),
   1 tane üç birimlik gemi (örnek: 2C 3D 4D) ile oynanır.
+  
+        UPDATE: Oyuncular gemi sayını değiştirebilir.
+        #define FLEET_NUMBER 9 //gemilerin toplam birim sayısıdır (2*1 + 2*2 + 1*3)
 
 * İki ve üç birimlik gemiler yatay veya dikey olarak yerleştirilebilir (diagonal olarak yerleştirilemez). 
 
