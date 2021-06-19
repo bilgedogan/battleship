@@ -5,14 +5,15 @@
 #include <string.h>
 
 #define MAXNAME 15
+#define SIZE 6
 
 void print_table(char **table, char name[])
 {
     printf("\n");
     printf("Table of %s\n", name);
     printf(" ");
-    for(int i = -1; i < 6; i++){
-        for(int j = 0; j< 6; j++){
+    for(int i = -1; i < SIZE; i++){
+        for(int j = 0; j< SIZE; j++){
             if(i == -1 )
                 printf("\t%c", (char)(j+65));
             else {
@@ -40,8 +41,8 @@ bool game(char name[],char **loc,char **table)
     x = (int)(estimation[0])-49; //49 is ascii value of '1'
     y = (int)estimation[1] - 65; //65 is ascii value of 'A'
 
-    while((x >= 6) || (y >= 6)|| table[x][y]!='-' ){
-        if(x >= 6 || y >= 6){
+    while((x >= SIZE) || (y >= SIZE)|| table[x][y]!='-' ){
+        if(x >= SIZE || y >= SIZE){
             printf("%s is not in 6*6 table so guess again: ", estimation);
         //printf("x:%d y:%d est:%s\n", x,y,estimation);
         }
@@ -121,15 +122,15 @@ int main()
     }
 
     //players tables for printing step by step
-    char **table1 = (char**)malloc(6*sizeof(char*));
-    char **table2 = (char**)malloc(6*sizeof(char*));
+    char **table1 = (char**)malloc(SIZE*sizeof(char*));
+    char **table2 = (char**)malloc(SIZE*sizeof(char*));
     for(int i = 0; i < 6; i++){
-        table1[i] = (char*)malloc(6*sizeof(char));
-        table2[i] = (char*)malloc(6*sizeof(char));
+        table1[i] = (char*)malloc(SIZE*sizeof(char));
+        table2[i] = (char*)malloc(SIZE*sizeof(char));
     }
 
-    for(int i = 0; i < 6; i++){
-        for(int j = 0; j < 6; j++){
+    for(int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
             table1[i][j] = '-';
             table2[i][j] = '-';
         }
